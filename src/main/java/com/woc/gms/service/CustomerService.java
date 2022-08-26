@@ -50,7 +50,7 @@ public class CustomerService {
 
         userDao.createUser(userDTO);
 
-        emailService.sendMailToUser(userDTO);
+        emailService.sendMailToUser(userDTO, customer.getName());
 
         return customer;
     }

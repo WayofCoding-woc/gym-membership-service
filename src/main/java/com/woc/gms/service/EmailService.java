@@ -3,14 +3,56 @@ package com.woc.gms.service;
 import com.woc.gms.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
-
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-    public void sendMailToUser(UserDTO userDTO) {
-        logger.info("TODO: need to compose mail to user with credentials and a website link using the data = {}", userDTO);
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    public void sendMailToUser(UserDTO userDTO, String customerName) {
+       logger.info("about to compose mail to user with credentials and a website link using the data = {}, customerName={}", userDTO, customerName);
+
+        String subject = "WOC GYM Portal Credentials";
+        String content = String.format("""
+                <pre>
+                    Hi %s,
+                       Please use the below credentials to login to our portal-
+                       website: https://woc-gym.com
+                       username: %s
+                       password: %s
+                       
+                       Thanks!
+                       WOC GYM Team
+                </pre>
+                """, customerName, userDTO.getUsername(), userDTO.getPassword());
+
+        sendMail(userDTO.getUsername(), subject, content);
     }
+
+    public void sendMail(String toMail, String subject, String mailBodyContent){
+        try{
+            logger.info("send mail request came, toMailId:{}, subject:{}, content:{}", toMail, subject, mailBodyContent);
+
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setTo(toMail);
+            mimeMessageHelper.setSubject(subject);
+            mimeMessage.setContent(mailBodyContent, "text/html; charset=utf-8");
+
+            javaMailSender.send(mimeMessage);
+
+            logger.info("Mail has been sent toMailId:{}, subject:{}, content:{}", toMail, subject, mailBodyContent);
+        }catch (Exception e){
+            logger.error("Could not send mail to:{}, subject:{}, content:{}", toMail, subject, mailBodyContent, e);
+        }
+    }
+
 }
