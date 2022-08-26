@@ -3,10 +3,7 @@ package com.woc.gms.service;
 import com.woc.gms.cons.USER_ROLE;
 import com.woc.gms.dao.CustomerDao;
 import com.woc.gms.dao.UserDao;
-import com.woc.gms.dto.CustomerDTO;
-import com.woc.gms.dto.PlanSubscriptionDTO;
-import com.woc.gms.dto.PlanSubscriptionPayloadDTO;
-import com.woc.gms.dto.UserDTO;
+import com.woc.gms.dto.*;
 import com.woc.gms.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,5 +50,9 @@ public class CustomerService {
         emailService.sendMailToUser(userDTO, customer.getName());
 
         return customer;
+    }
+
+    public List<CustomerPlanDataForAlertDTO> getAllCustomersWhoesPlansAreExpiring(){
+        return customerDao.getAllCustomersWhoesPlansAreExpiring();
     }
 }

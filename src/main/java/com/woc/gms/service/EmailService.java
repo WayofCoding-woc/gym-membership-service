@@ -1,5 +1,6 @@
 package com.woc.gms.service;
 
+import com.woc.gms.dto.CustomerPlanDataForAlertDTO;
 import com.woc.gms.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,4 +56,25 @@ public class EmailService {
         }
     }
 
+    public void sendPlanExpiryMail(CustomerPlanDataForAlertDTO customerPlanDataForAlertDTO) {
+        logger.info("about to compose sendPlanExpiryMail for data={}", customerPlanDataForAlertDTO);
+
+        String subject = "WOC GYM Plan is about to expire";
+        String content = String.format("""
+                <pre>
+                    Hi %s,
+                       This is to inform that your plan- %s is expiring on - %s
+                       Please recharge any plan to continue over service.
+                       
+                       website: https://woc-gym.com
+                       
+                       Thanks!
+                       WOC GYM Team
+                </pre>
+                """, customerPlanDataForAlertDTO.getCustomerName(),
+                customerPlanDataForAlertDTO.getPlanName(),
+                customerPlanDataForAlertDTO.getPlanExpireOn());
+
+        sendMail(customerPlanDataForAlertDTO.getEmail(), subject, content);
+    }
 }

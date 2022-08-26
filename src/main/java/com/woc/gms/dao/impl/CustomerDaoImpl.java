@@ -3,6 +3,7 @@ package com.woc.gms.dao.impl;
 import com.woc.gms.cons.SUBSCRIPTION_STATUS;
 import com.woc.gms.dao.CustomerDao;
 import com.woc.gms.dto.CustomerDTO;
+import com.woc.gms.dto.CustomerPlanDataForAlertDTO;
 import com.woc.gms.dto.PlanSubscriptionDTO;
 import com.woc.gms.dto.PlanSubscriptionPayloadDTO;
 import com.woc.gms.jpa.model.Customer;
@@ -11,10 +12,14 @@ import com.woc.gms.jpa.model.PlanSubscription;
 import com.woc.gms.jpa.repo.CustomerRepository;
 import com.woc.gms.jpa.repo.PlanRepository;
 import com.woc.gms.jpa.repo.PlanSubscriptionRepository;
+import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -119,5 +124,42 @@ public class CustomerDaoImpl implements CustomerDao {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<CustomerPlanDataForAlertDTO> getAllCustomersWhoesPlansAreExpiring() {
+        List<PlanSubscription> planSubscriptions = planSubscriptionRepository.findByStatus(SUBSCRIPTION_STATUS.ACTIVE);
+        List<CustomerPlanDataForAlertDTO> customerPlanDataForAlertDTOS = new LinkedList<>();
+        for(PlanSubscription planSubscription : planSubscriptions){
+            Plan plan = planSubscription.getPlan();
+            Integer planValidity = plan.getValidity();
+            Date createdDate = planSubscription.getCreatedDate();
+
+            Date expiryOn = new DateTime(createdDate).plusDays(planValidity).toDate();
+            Date currentDate = new Date();
+            if(isAlertCriteriaEligible(currentDate, expiryOn)) {
+                CustomerPlanDataForAlertDTO customerPlanDataForAlertDTO = new CustomerPlanDataForAlertDTO();
+                Customer customer = planSubscription.getCustomer();
+                customerPlanDataForAlertDTO.setCustomerName(customer.getName());
+                customerPlanDataForAlertDTO.setEmail(customer.getEmail());
+                customerPlanDataForAlertDTO.setPlanName(plan.getName());
+                customerPlanDataForAlertDTO.setPlanExpireOn(expiryOn);
+                customerPlanDataForAlertDTOS.add(customerPlanDataForAlertDTO);
+            }
+        }
+
+        return customerPlanDataForAlertDTOS;
+    }
+
+    private boolean isAlertCriteriaEligible(Date currentDate, Date expiryOn) {
+        if(currentDate.after(expiryOn)){
+            return false;
+        }
+        long daysBetween = ChronoUnit.DAYS.between(currentDate.toInstant(), expiryOn.toInstant());
+        if(daysBetween <= 5){
+            return true;
+        }
+
+        return false;
     }
 }
