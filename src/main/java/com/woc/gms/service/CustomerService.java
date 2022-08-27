@@ -6,14 +6,15 @@ import com.woc.gms.dao.UserDao;
 import com.woc.gms.dto.*;
 import com.woc.gms.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
-@Service
+//@Component
+//@Service
 public class CustomerService {
 
+    //@Qualifier("customerDaoV2")
     @Autowired
     private CustomerDao customerDao;
 

@@ -14,8 +14,12 @@ import com.woc.gms.jpa.repo.PlanRepository;
 import com.woc.gms.jpa.repo.PlanSubscriptionRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.LinkedList;
@@ -23,7 +27,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+@Primary
+@Component
 public class CustomerDaoImpl implements CustomerDao {
 
     @Autowired
@@ -124,6 +129,15 @@ public class CustomerDaoImpl implements CustomerDao {
         }
         return null;
     }
+
+
+    /*public List<CustomerPlanDataForAlertDTO> getAllCustomersWhoesPlansAreExpiringV2() {
+        long totalRecords = planSubscriptionRepository.countByStatus(SUBSCRIPTION_STATUS.ACTIVE); // 525
+        int pageSize = 100;
+        //int recordLength = totalRecords-pageSize;
+        List<PlanSubscription> byStatus = planSubscriptionRepository.findByStatus(SUBSCRIPTION_STATUS.ACTIVE, (Pageable) PageRequest.of(0, pageSize));
+
+    }*/
 
     @Override
     public List<CustomerPlanDataForAlertDTO> getAllCustomersWhoesPlansAreExpiring() {

@@ -8,7 +8,8 @@ import java.util.List;
 @Entity
 @Table(name = "customer")
 public class Customer implements Serializable {
-    private static final long serialVersionUID = -3617906511756173534L;
+
+    private static final long serialVersionUID = -3417518093186335726L;
 
     @Id
     @Column(name = "id")
