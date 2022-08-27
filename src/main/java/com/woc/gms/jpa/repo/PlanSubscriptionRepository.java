@@ -1,7 +1,7 @@
 package com.woc.gms.jpa.repo;
 
 import com.woc.gms.cons.SUBSCRIPTION_STATUS;
-import com.woc.gms.jpa.model.PlanSubscription;
+import com.woc.gms.jpa.entity.PlanSubscription;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

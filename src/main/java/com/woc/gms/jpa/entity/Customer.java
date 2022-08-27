@@ -1,4 +1,4 @@
-package com.woc.gms.jpa.model;
+package com.woc.gms.jpa.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

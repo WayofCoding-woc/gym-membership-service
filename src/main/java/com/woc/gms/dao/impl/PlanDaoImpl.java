@@ -2,7 +2,7 @@ package com.woc.gms.dao.impl;
 
 import com.woc.gms.dao.PlanDao;
 import com.woc.gms.dto.PlanDTO;
-import com.woc.gms.jpa.model.Plan;
+import com.woc.gms.jpa.entity.Plan;
 import com.woc.gms.jpa.repo.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -2,12 +2,10 @@ package com.woc.gms.dao.impl;
 
 import com.woc.gms.dao.UserDao;
 import com.woc.gms.dto.UserDTO;
-import com.woc.gms.jpa.model.User;
+import com.woc.gms.jpa.entity.User;
 import com.woc.gms.jpa.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 public class UserDaoImpl implements UserDao {

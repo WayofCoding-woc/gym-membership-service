@@ -1,6 +1,6 @@
 package com.woc.gms.jpa.repo;
 
-import com.woc.gms.jpa.model.User;
+import com.woc.gms.jpa.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
