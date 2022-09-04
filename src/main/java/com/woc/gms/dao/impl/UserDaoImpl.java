@@ -19,6 +19,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public UserDTO findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setCreatedDate(user.getCreatedDate());
+        userDTO.setRole(user.getRole());
+        return userDTO;
+    }
+
+    @Override
     public void createUser(UserDTO userDTO) {
         User user = new User();
         user.setUsername(userDTO.getUsername());
