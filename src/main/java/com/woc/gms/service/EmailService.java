@@ -18,7 +18,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendMailToUser(UserDTO userDTO, String customerName) {
+    public void sendMailToUser(UserDTO userDTO, String plainPassword, String customerName) {
        logger.info("about to compose mail to user with credentials and a website link using the data = {}, customerName={}", userDTO, customerName);
 
         String subject = "WOC GYM Portal Credentials";
@@ -33,7 +33,7 @@ public class EmailService {
                        Thanks!
                        WOC GYM Team
                 </pre>
-                """, customerName, userDTO.getUsername(), userDTO.getPassword());
+                """, customerName, userDTO.getUsername(), plainPassword);
 
         sendMail(userDTO.getUsername(), subject, content);
     }

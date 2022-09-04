@@ -25,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/actuator/**",
                         "/v3/api-docs/**",
@@ -33,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "**/swagger-ui/index.html"
                         )
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/customer/**").hasAnyRole(USER_ROLE.ADMIN.name())
-                .antMatchers(HttpMethod.GET, "/api/customer/**").hasAnyRole(USER_ROLE.ADMIN.name(), USER_ROLE.CUSTOMER.name())
+                .antMatchers(HttpMethod.POST, "/api/customer/**").hasAnyAuthority(USER_ROLE.ADMIN.name())
+                .antMatchers(HttpMethod.GET, "/api/customer/**").hasAnyAuthority(USER_ROLE.ADMIN.name(), USER_ROLE.CUSTOMER.name())
                 .anyRequest()
                 .authenticated()
                 .and()

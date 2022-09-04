@@ -56,7 +56,7 @@ public class CustomerService {
 
         userDao.createUser(userDTO);
 
-        emailService.sendMailToUser(userDTO, customer.getName());
+        emailService.sendMailToUser(userDTO, password, customer.getName());
 
         return customer;
     }
