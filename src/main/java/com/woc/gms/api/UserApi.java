@@ -15,10 +15,10 @@ public class UserApi {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public Boolean login(@RequestBody LoginCredentialsDTO loginCredentialsDTO){
         return userService.login(loginCredentialsDTO.getUsername(), loginCredentialsDTO.getPassword());
-    }
+    }*/
 
 
     
