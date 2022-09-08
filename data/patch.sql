@@ -7,3 +7,7 @@ insert into plan(name, validity, price, discount, final_price)
 insert into plan(name, validity, price, discount, final_price)
                values('YEARLY', 365, 18000, 6000, 12000);
 
+-- plain password=abc123
+insert into login_user(created_date,password, role, username)
+ values(now(), '{bcrypt}$2a$10$vTBNLad1xNnjYIO1s.hoVOsH9ATZ4fmvv8YByvuBdTu0HDGWi8KTe', 'ADMIN', 'admin');
+

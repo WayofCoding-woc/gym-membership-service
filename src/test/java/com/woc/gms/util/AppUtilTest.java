@@ -16,7 +16,7 @@ public class AppUtilTest {
 
     @Test
     public void generateEncodedPassword(){
-        String pwd = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode("pwd");
+        String pwd = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode("abc123");
         System.out.println("pwd = " + pwd);
         Assertions.assertNotNull(pwd);
     }
