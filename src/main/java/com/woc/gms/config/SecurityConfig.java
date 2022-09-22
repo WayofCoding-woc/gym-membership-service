@@ -31,7 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
                         "**/swagger-ui.html",
-                        "**/swagger-ui/index.html"
+                        "**/swagger-ui/index.html",
+                        "**"//enabling access to all api for fast ui dev temporarily
                         )
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/api/customer/**").hasAnyAuthority(USER_ROLE.ADMIN.name())

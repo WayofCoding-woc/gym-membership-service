@@ -14,6 +14,11 @@ public class PlanService {
 
 
     public List<PlanDTO> getAllPlans() {
+        /*try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }*/
         return planDao.getAllPlans();
     }
 }
