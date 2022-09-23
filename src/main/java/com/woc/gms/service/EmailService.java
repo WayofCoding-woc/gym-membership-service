@@ -39,7 +39,7 @@ public class EmailService {
     }
 
     public void sendMail(String toMail, String subject, String mailBodyContent){
-        try{
+        /*try{
             logger.info("send mail request came, toMailId:{}, subject:{}, content:{}", toMail, subject, mailBodyContent);
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -53,7 +53,7 @@ public class EmailService {
             logger.info("Mail has been sent toMailId:{}, subject:{}, content:{}", toMail, subject, mailBodyContent);
         }catch (Exception e){
             logger.error("Could not send mail to:{}, subject:{}, content:{}", toMail, subject, mailBodyContent, e);
-        }
+        }*/
     }
 
     public void sendPlanExpiryMail(CustomerPlanDataForAlertDTO customerPlanDataForAlertDTO) {

@@ -2,6 +2,8 @@ package com.woc.gms.service;
 
 import com.woc.gms.cons.USER_ROLE;
 import com.woc.gms.dao.UserDao;
+import com.woc.gms.dto.CustomerDTO;
+import com.woc.gms.dto.LoggedInUserDTO;
 import com.woc.gms.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,9 +22,27 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private CustomerService customerService;
 
-    public Boolean login(String username, String password) {
-        return userDao.login(username, password);
+
+    public LoggedInUserDTO login(String username, String password) {
+        boolean login = userDao.login(username, password);
+
+        LoggedInUserDTO loggedInUserDTO = new LoggedInUserDTO();
+        if(login){
+            loggedInUserDTO.setAuthenticated(true);
+            UserDTO userDTO = userDao.findByUsername(username);
+            loggedInUserDTO.setUsername(userDTO.getUsername());
+            loggedInUserDTO.setRole(userDTO.getRole().name());
+
+            CustomerDTO customerByEmail = customerService.getCustomerByEmail(username);
+            if(customerByEmail != null){
+                loggedInUserDTO.setCustomerId(customerByEmail.getId());
+            }
+        }
+
+        return loggedInUserDTO;
     }
 
     @Override
