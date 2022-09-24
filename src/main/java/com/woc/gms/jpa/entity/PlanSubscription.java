@@ -34,6 +34,12 @@ public class PlanSubscription implements Serializable {
     @Column(name = "status")
     private SUBSCRIPTION_STATUS status;
 
+    @Column(name = "payment_mode")
+    private String paymentMode;
+
+    @Column(name = "payment_ref_no")
+    private String paymentRefNo;
+
     public Integer getId() {
         return id;
     }
@@ -80,5 +86,21 @@ public class PlanSubscription implements Serializable {
 
     public void setStatus(SUBSCRIPTION_STATUS status) {
         this.status = status;
+    }
+
+    public String getPaymentMode() {
+        return paymentMode;
+    }
+
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
+    }
+
+    public String getPaymentRefNo() {
+        return paymentRefNo;
+    }
+
+    public void setPaymentRefNo(String paymentRefNo) {
+        this.paymentRefNo = paymentRefNo;
     }
 }

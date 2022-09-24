@@ -42,6 +42,10 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public CustomerDTO createCustomer(CustomerDTO customerDTO) {
+        if(null != customerRepository.findByEmail(customerDTO.getEmail())){
+            throw new IllegalArgumentException("Customer already exists with emailId="+customerDTO.getEmail());
+        }
+
         Customer customer = new Customer();
         customer.setName(customerDTO.getName());
         customer.setEmail(customerDTO.getEmail());
@@ -92,6 +96,9 @@ public class CustomerDaoImpl implements CustomerDao {
                         dto.setValidity(plan.getValidity());
                         dto.setStatus(e.getStatus());
                         dto.setActivatedDate(e.getCreatedDate());
+                        dto.setPaymentMode(e.getPaymentMode());
+                        dto.setPaymentRefNo(e.getPaymentRefNo());
+                        dto.setPaidAmount(e.getPaidAmount());
                         return dto;
                     })
                     .collect(Collectors.toList());
@@ -112,7 +119,9 @@ public class CustomerDaoImpl implements CustomerDao {
                 planSubscription.setCustomer(customer);
                 planSubscription.setPlan(plan);
                 planSubscription.setPaidAmount(planSubscriptionPayloadDTO.getPaidAmount());
-                planSubscription.setCreatedDate(planSubscriptionPayloadDTO.getActivatedDate());
+                planSubscription.setCreatedDate(new Date());
+                planSubscription.setPaymentMode(planSubscriptionPayloadDTO.getPaymentMode());
+                planSubscription.setPaymentRefNo(planSubscriptionPayloadDTO.getPaymentRefNo());
                 planSubscription.setStatus(SUBSCRIPTION_STATUS.ACTIVE);
 
                 PlanSubscription savedPlanSubscription = planSubscriptionRepository.save(planSubscription);
@@ -122,12 +131,18 @@ public class CustomerDaoImpl implements CustomerDao {
                 planSubscriptionDTO.setPlan(linkedPlan.getName());
                 planSubscriptionDTO.setValidity(linkedPlan.getValidity());
                 planSubscriptionDTO.setActivatedDate(savedPlanSubscription.getCreatedDate());
-                planSubscriptionDTO.setStatus(planSubscription.getStatus());
+                planSubscriptionDTO.setStatus(savedPlanSubscription.getStatus());
+                planSubscriptionDTO.setPaymentMode(savedPlanSubscription.getPaymentMode());
+                planSubscriptionDTO.setPaymentRefNo(savedPlanSubscription.getPaymentRefNo());
 
                 return planSubscriptionDTO;
+            }else{
+                throw new IllegalArgumentException("No such Plan exists with planId="+planId);
             }
+        }else{
+            throw new IllegalArgumentException("No such Customer exists with customerId="+customerId);
         }
-        return null;
+
     }
 
 

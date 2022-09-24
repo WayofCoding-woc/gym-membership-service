@@ -5,6 +5,7 @@ import com.woc.gms.dto.UserDTO;
 import com.woc.gms.jpa.entity.User;
 import com.woc.gms.jpa.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,8 +15,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean login(String username, String password) {
-        User user = userRepository.findByUsernameAndPassword(username, password);
-        return (user != null);
+        User user = userRepository.findByUsername(username);
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder().matches(password, user.getPassword());
     }
 
     @Override
