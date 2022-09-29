@@ -2,6 +2,7 @@ package com.woc.gms.api;
 
 import com.woc.gms.dto.LoggedInUserDTO;
 import com.woc.gms.dto.LoginCredentialsDTO;
+import com.woc.gms.dto.ResetPasswordDTO;
 import com.woc.gms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,11 @@ public class UserApi {
     public LoggedInUserDTO login(@RequestBody LoginCredentialsDTO loginCredentialsDTO){
         LoggedInUserDTO loggedInUserDTO = userService.login(loginCredentialsDTO.getUsername(), loginCredentialsDTO.getPassword());
         return loggedInUserDTO;
+    }
+
+    @PostMapping("/resetPassword")
+    public Boolean resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO){
+        return userService.resetPassword(resetPasswordDTO);
     }
 
 

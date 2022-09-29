@@ -1,5 +1,6 @@
 package com.woc.gms.dao;
 
+import com.woc.gms.dto.ResetPasswordDTO;
 import com.woc.gms.dto.UserDTO;
 
 public interface UserDao {
@@ -7,4 +8,6 @@ public interface UserDao {
     UserDTO findByUsername(String username);
 
     void createUser(UserDTO userDTO);
+
+    Boolean resetPassword(ResetPasswordDTO resetPasswordDTO);
 }

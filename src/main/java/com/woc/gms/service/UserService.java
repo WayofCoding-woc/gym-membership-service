@@ -4,6 +4,7 @@ import com.woc.gms.cons.USER_ROLE;
 import com.woc.gms.dao.UserDao;
 import com.woc.gms.dto.CustomerDTO;
 import com.woc.gms.dto.LoggedInUserDTO;
+import com.woc.gms.dto.ResetPasswordDTO;
 import com.woc.gms.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -53,5 +54,9 @@ public class UserService implements UserDetailsService {
         authority.add(new SimpleGrantedAuthority(role.name()));
         User user = new User(userDTO.getUsername(), userDTO.getPassword(), authority);
         return user;
+    }
+
+    public Boolean resetPassword(ResetPasswordDTO resetPasswordDTO) {
+        return userDao.resetPassword(resetPasswordDTO);
     }
 }

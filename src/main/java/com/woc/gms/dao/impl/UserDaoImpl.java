@@ -1,6 +1,7 @@
 package com.woc.gms.dao.impl;
 
 import com.woc.gms.dao.UserDao;
+import com.woc.gms.dto.ResetPasswordDTO;
 import com.woc.gms.dto.UserDTO;
 import com.woc.gms.jpa.entity.User;
 import com.woc.gms.jpa.repo.UserRepository;
@@ -39,5 +40,24 @@ public class UserDaoImpl implements UserDao {
         user.setRole(userDTO.getRole());
 
         userRepository.save(user);
+    }
+
+    @Override
+    public Boolean resetPassword(ResetPasswordDTO resetPasswordDTO) {
+        User user = userRepository.findByUsername(resetPasswordDTO.getUsername());
+        if(user == null){
+            throw new IllegalArgumentException("No such user exits in our system with username="+resetPasswordDTO.getUsername());
+        }
+
+        if(!PasswordEncoderFactories.createDelegatingPasswordEncoder().matches(resetPasswordDTO.getCurrentPassword(), user.getPassword())){
+            throw new IllegalArgumentException("Credentials does not match, please try again");
+        }
+
+        String encodedNewPassword = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(resetPasswordDTO.getNewPassword());
+        user.setPassword(encodedNewPassword);
+
+        userRepository.save(user);
+
+        return true;
     }
 }
